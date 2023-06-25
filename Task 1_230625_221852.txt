@@ -1,0 +1,45 @@
+# Import necessary libraries
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# Download required resources
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Define a list of job candidates with their skills and qualifications
+job_candidates = [
+    {'name': 'Candidate A', 'skills': 'Python, Machine Learning, Data Analysis'},
+    {'name': 'Candidate B', 'skills': 'Java, Deep Learning, Natural Language Processing'},
+    {'name': 'Candidate C', 'skills': 'Python, Data Visualization, Statistical Analysis'},
+    {'name': 'Candidate D', 'skills': 'R, Data Mining, Predictive Modeling'},
+    {'name': 'Candidate E', 'skills': 'Python, SQL, Business Intelligence'}
+]
+
+# Define the job requirements
+job_requirements = 'Python, Data Analysis, Machine Learning'
+
+# Tokenize and normalize the job requirements
+requirements_tokens = word_tokenize(job_requirements.lower())
+
+# Remove stopwords from the requirements tokens
+stop_words = set(stopwords.words('english'))
+requirements_tokens = [token for token in requirements_tokens if token not in stop_words]
+
+# Find the best candidate based on matching skills
+best_candidate = None
+best_match_count = 0
+
+for candidate in job_candidates:
+    candidate_skills = word_tokenize(candidate['skills'].lower())
+    candidate_match_count = len(set(requirements_tokens).intersection(candidate_skills))
+    
+    if candidate_match_count > best_match_count:
+        best_candidate = candidate
+        best_match_count = candidate_match_count
+
+# Print the best candidate
+if best_candidate is not None:
+    print(f"The best candidate for the job is: {best_candidate['name']}")
+else:
+    print("No suitable candidate found.")
